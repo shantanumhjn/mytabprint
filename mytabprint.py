@@ -15,7 +15,12 @@ def print_data(data, headers_to_print = None):
 
     for row in data:
         for header in headers:
-            header[1] = max(header[1], len(row.get(header[0], '')))
+            _ = row.get(header[0], '')
+            if type(_) in [int, float]:
+                row[header[0]] = "{:,}".format(_)
+            else:
+                row[header[0]] = _
+            header[1] = max(header[1], len(str(row[header[0]])))
 
     print_format = (u'{{:>{}}}' * len(headers)).format(*[h[1]+2 for h in headers])
     print print_format.format(*[h[0] for h in headers])
